@@ -14,7 +14,7 @@ class MyLoss(nn.Module):
     def __init__(self):
         super(MyLoss,self).__init__()
         self.criterion_GAN = torch.nn.MSELoss()
-        self.criterion_pixelwise = torch.nn.L1Loss()
+        self.criterion_pixelwise = torch.nn.L1Loss() # L1 loss: sum of all absolute differences between target and predictions pixel values
         self.lambda_pixel = 100
     def __call__(self, pred, original):
         loss_GAN = self.criterion_GAN(pred, original)
@@ -46,15 +46,16 @@ class ConvolutionalBlock(nn.Module):
 
         # A batch normalization (BN) layer, if wanted
         if batch_norm is True:
-            layers.append(nn.BatchNorm2d(num_features=out_channels))
+            layers.append(nn.BatchNorm2d(num_features=out_channels))    # used to accelerate the training, normalizing inputs by collapsin input between 0,1, better accuracy with less epochs
+            # less need for other regularization (preventign overfitting)
 
-        # An activation layer, if wanted
+        # An activation layer, if wanted        # non-linear transformation - whether to activate the neuron or no
         if activation == 'prelu':
-            layers.append(nn.PReLU())
+            layers.append(nn.PReLU())           # same as leaky, a is parametrized -> we learn parameter a during backpropagation
         elif activation == 'leakyrelu':
-            layers.append(nn.LeakyReLU(0.2))
+            layers.append(nn.LeakyReLU(0.2))    # upgraded ReLu activation - for positive values same as relu, for negative: 0,2*input -> doesn't zero out negative inputs
         elif activation == 'tanh':
-            layers.append(nn.Tanh())
+            layers.append(nn.Tanh())            # byperbolic tangent activation - output: (-1,1), 
 
         # A convolutional layer
         layers.append(
@@ -62,8 +63,8 @@ class ConvolutionalBlock(nn.Module):
                       padding=kernel_size // 2))
 
         layers.append(
-            nn.Dropout(p=0.1)
-            )
+            nn.Dropout(p=0.1)   # dropout regularization layer: for preventing overfitting - by randomly disactivating neuron outputs we are creating "variations" of the og netowork architecture
+            )                   # not used on output, only during training 
 
         # A convolutional layer
         layers.append(

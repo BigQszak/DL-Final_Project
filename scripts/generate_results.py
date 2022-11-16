@@ -10,6 +10,7 @@ from random import randint
 import argparse
 import importlib
 
+# generating rresults(images) for chosen model
 
 #parsing args
 parser = argparse.ArgumentParser(description='Parameters for generating results')

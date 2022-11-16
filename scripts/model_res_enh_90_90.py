@@ -20,7 +20,7 @@ class Model(nn.Module):
         #encoder
         x = F.relu(self.conv1(x))
         x = F.relu(self.conv2(x))
-        x = torch.sigmoid(self.conv3(x))
+        x = torch.sigmoid(self.conv3(x))    # sigmoid activation function => probability between 0-1, very negative input = 0, very positive = 1, the more positive value the more neuron will be activated
         return x
 
 def train(dataloader, model, loss_fn, optimizer, transform=transforms.Resize(input_size)):

@@ -12,6 +12,7 @@ from tnn import Tnn
 input_size = (90, 90)
 avg_size = (360, 360)
 
+#### Comparing different losses of selected model for image resolution enhancment
 
 transform = transforms.Compose(
     [transforms.Normalize((0.5, 0.5, 0.5), (0.5, 0.5, 0.5))]

@@ -126,7 +126,7 @@ class Model(nn.Module):
     def __init__(self):
         super(Model, self).__init__()
 
-        self.upsample = nn.UpsamplingBilinear2d(scale_factor=4)                                           
+        self.upsample = nn.UpsamplingBilinear2d(scale_factor=4) # bilinear upsamling - increasing spatial dimensions                                  
         self.conv1 = nn.Conv2d(in_channels=3, out_channels=64, kernel_size=3, stride=1, padding=1)
         self.block1 = ResidualBlock(3, 64)
         self.block2 = ResidualBlock(3, 64)
@@ -134,7 +134,7 @@ class Model(nn.Module):
         self.bn = nn.BatchNorm2d(num_features=64) 
         self.conv2 = nn.Conv2d(in_channels=64, out_channels=3, kernel_size=3, stride=1, padding=1)
 
-        self.criterion = SSIMLoss(5)
+        self.criterion = SSIMLoss(5) # VGG loss
             
     def forward(self, x):
         #encoder
